@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width">
+  <title>dictionary-loader</title>
+</head>
+<body>
+  
+
+<template id="dictionary-loader-template">
+  <input type="file" id="file-input" />
+  <ul id="dictionary-list"></ul>
+</template>
+
+<dictionary-loader></dictionary-loader>
+
+<script>
+  class DictionaryLoader extends HTMLElement {
+    constructor() {
+      super();
+
+      const template = document.getElementById("dictionary-loader-template");
+      const templateContent = template.content;
+
+      this.attachShadow({ mode: "open" }).appendChild(templateContent.cloneNode(true));
+    }
+
+    connectedCallback() {
+      this.shadowRoot.getElementById("file-input").addEventListener("change", this.handleFileChange);
+    }
+
+    handleFileChange = event => {
+      const file = event.target.files[0];
+      const reader = new FileReader();
+      reader.onload = () => {
+        const text = reader.result;
+        const words = text.split("\n").map(line => line.split(","));
+        this.renderWords(words);
+      };
+      reader.readAsText(file);
+    };
+
+    renderWords(words) {
+      const dictionaryList = this.shadowRoot.getElementById("dictionary-list");
+      dictionaryList.innerHTML = "";
+      words.forEach(([word, definition]) => {
+        const li = document.createElement("li");
+        li.innerHTML = `<strong>${word}</strong>: ${definition}`;
+        dictionaryList.appendChild(li);
+      });
+    }
+  }
+
+  customElements.define("dictionary-loader", DictionaryLoader);
+</script>
+
+</body>
+</html>

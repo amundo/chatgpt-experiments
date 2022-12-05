@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width">
+  <title>ChatGPT Minimal Pair test</title>
+<style>
+* {
+  box-sizing: border-box;
+}
+html, body {
+  height: 100%;
+  display: grid;
+}
+
+body {
+  grid-template: 
+    "header header" auto
+    "input output"  1fr
+  /  1fr   2fr;
+  padding:1em;
+}
+
+h1 {
+  margin:0;
+  grid-area: header;
+}
+</style>
+
+</head>
+<body>
+  <h1>ChatGPT Minimal Pair test</h1>
+
+<textarea></textarea>
+<ul></ul>
+
+<script type="module">
+import {words, findMinimalPairs} from './minimalpairs.js'
+
+
+let textarea = document.querySelector('textarea')
+let ul = document.querySelector('ul')
+
+
+document.querySelector("textarea")
+.addEventListener('keyup', keyupEvent => {
+  let plaintext = textarea.value.trim()
+  let words = plaintext
+    .split(/\n/g)
+    .filter(line => line.length) // ignore blank lines
+    .map(token => token.trim())
+
+  let minimalPairs = findMinimalPairs(words)
+  window.minimalPairs = minimalPairs
+
+  ul.innerHTML = ``
+  for(let [a,bs] of minimalPairs){ 
+    ul.innerHTML += `<li><strong>${a}</strong><ol>
+      ${bs.map(b => `<li>${b}</li>`).join('\n')}
+        </ol>
+    </li>`
+  }
+})
+
+textarea.value = words.join("\n")
+document.querySelector('textarea').dispatchEvent(new Event('keyup'))
+</script>
+  
+</body>
+</html>

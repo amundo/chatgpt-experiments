@@ -1,0 +1,41 @@
+<html>
+  <head>
+    <title>French Vocabulary Practice</title>
+  </head>
+  <body>
+    <h1>French Vocabulary Practice</h1>
+    <p>Translate the following word:</p>
+    <p id="french-word">Bonjour</p>
+    <p>Select the correct English translation:</p>
+    <form>
+      <input type="radio" name="translation" value="Hello" id="hello">
+      <label for="hello">Hello</label><br>
+      <input type="radio" name="translation" value="Goodbye" id="goodbye">
+      <label for="goodbye">Goodbye</label><br>
+      <input type="radio" name="translation" value="Thank you" id="thank-you">
+      <label for="thank-you">Thank you</label><br>
+      <input type="radio" name="translation" value="How are you?" id="how-are-you">
+      <label for="how-are-you">How are you?</label><br>
+      <button type="button" onclick="checkAnswer()">Submit</button>
+    </form>
+    <p id="result"></p>
+    <script>
+      function checkAnswer() {
+        // Get the selected translation
+        var selectedTranslation = document.querySelector('input[name="translation"]:checked').value;
+        
+        // Get the correct answer
+        var correctAnswer = "Hello";
+        
+        // Check if the selected translation is correct
+        if (selectedTranslation == correctAnswer) {
+          // If the selected translation is correct, display a success message
+          document.getElementById("result").innerHTML = "Correct! Bonjour means hello in English.";
+        } else {
+          // If the selected translation is incorrect, display an error message
+          document.getElementById("result").innerHTML = "Incorrect. Bonjour means hello in English.";
+        }
+      }
+    </script>
+  </body>
+</html>
