@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dictionary</title>
+</head>
+<body>
+  <h1>Dictionary</h1>
+
+  <p>
+    <label for="sort-by">Sort by:</label>
+    <select id="sort-by">
+      <option value="word">Word</option>
+      <option value="definition">Definition</option>
+    </select>
+  </p>
+
+  <table id="dictionary">
+    <thead>
+      <tr>
+        <th>Word</th>
+        <th>Definition</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+
+  <script>
+    // Load the CSV file containing the dictionary
+    fetch('dictionary.csv')
+      .then(response => response.text())
+      .then(csv => {
+        // Parse the CSV into an array of objects
+        const dictionary = csv
+          .split('\n')
+          .slice(1)
+          .map(line => line.split(','))
+          .map(([word, definition]) => ({ word, definition }));
+
+        // Populate the table with the dictionary
+        const tbody = document.querySelector('#dictionary tbody');
+        dictionary.forEach(({ word, definition }) => {
+          const row = document.createElement('tr');
+          row.innerHTML = `<td>${word}</td><td>${definition}</td>`;
+          tbody.appendChild(row);
+        });
+
+        // Sort the dictionary when the user selects a different option in the select element
+        const select = document.querySelector('#sort-by');
+        select.addEventListener('change', () => {
+          const sortBy = select.value;
+
+          // Sort the dictionary
+          const sortedDictionary = [...dictionary].sort((a, b) => {
+            if (a[sortBy] < b[sortBy]) {
+              return -1;
+            } else if (a[sortBy] > b[sortBy]) {
+              return 1;
+            } else {
+              return 0;
+            }
+          });
+
+          // Clear the table
+          tbody.innerHTML = '';
+
+          // Populate the table with the sorted dictionary
+          sortedDictionary.forEach(({ word, definition }) => {
+            const row = document.createElement('tr');
+            row.innerHTML = `<td>${word}</td><td>${definition}</td>`;
+            tbody.appendChild(row);
+          });
+        });
+      });
+  </script>
+</body>
+</html>
