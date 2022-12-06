@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>droppable-list</title>
+</head>
+<body>
+<!-- HTML for the <p> tag -->
+<p id="my-paragraph">Drop me on the list!</p>
+
+<!-- HTML for the droppable-list component -->
+<droppable-list></droppable-list>
+
+<!-- Import the DroppableList web component -->
+
+<!-- JavaScript to enable dropping on the <p> tag -->
+<script type="module">
+import {DroppableList} from './DroppableList.js'
+
+const myParagraph = document.querySelector('#my-paragraph');
+myParagraph.setAttribute('draggable', true);
+myParagraph.addEventListener('dragstart', event => {
+  event.dataTransfer.setData('text', event.target.innerText);
+});
+
+
+const droppableList = document.querySelector('droppable-list');
+droppableList.data = `cherry banana apple`.split` `
+droppableList.addEventListener('dragover', event => {
+  event.preventDefault();
+})
+</script>
+</body>
+</html>  
